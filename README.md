@@ -1,4 +1,4 @@
-# CLI Introspector
+# CLI Tool Representation
 
 A simple Python script that lists a command-line tool’s options and subcommands in JSON.
 
