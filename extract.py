@@ -23,3 +23,23 @@ def get_help(cmd_list):
     except FileNotFoundError:
         print(f"Error: command not found: {' '.join(cmd_list)}", file=sys.stderr)
         sys.exit(1)
+
+def parse_subcommands(help_text):
+    """
+    Find subcommand names in indented sections of help_text
+    Ignores options (starting with '-') and numbered lists
+    """
+    # commands already seen
+    found = set()
+    for line in help_text.splitlines():
+        # ignore non-indents
+        if not line.startswith(' '):
+            continue
+        text = line.lstrip()
+        if not text:
+            continue
+        token = text.split()[0]
+        if token.startswith('-') or token[0].isdigit():
+            continue
+        found.add(token)
+    return sorted(found)
