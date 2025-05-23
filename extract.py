@@ -9,7 +9,7 @@ MAX_DEPTH = 2
 def get_help(cmd_list):
     """
     Run the tool's help command and return its output.
-    cmd_list must be the command contained in a list, ex. [git]
+    cmd_list must be the command contained in a list, ex. ['git'] or ['docker', 'build']
     """
     try:
         return subprocess.check_output(
@@ -43,3 +43,45 @@ def parse_subcommands(help_text):
             continue
         found.add(token)
     return sorted(found)
+
+def parse_options(help_text):
+    """
+    Find all options (flags) in the help text by looking for tokens that start
+    with '-' or '--'. Strips trailing commas.
+    """
+    opts = set()
+    for line in help_text.splitlines():
+        # split on whitespace, examine each token
+        for tok in line.strip().split():
+            if tok.startswith('-') and not tok[1:].isdigit():
+                opts.add(tok.rstrip(','))
+    return sorted(opts)
+
+def build_tree(cmd_list, depth=0, max_depth=MAX_DEPTH):
+    """
+    Recursively build a dict representing:
+      {
+        name:       <command name>,
+        options:    [...list of flags...],
+        subcommands:{ <sub>: {same structure}, ... }
+      }
+    """
+    name = cmd_list[-1]
+    help_text = get_help(cmd_list)
+    options = parse_options(help_text)
+    subs    = parse_subcommands(help_text)
+
+    node = {
+        'name': name,
+        'options': options,
+        'subcommands': {}
+    }
+
+    if depth < max_depth:
+        for sub in subs:
+            node['subcommands'][sub] = build_tree(
+                cmd_list + [sub],
+                depth + 1,
+                max_depth
+            )
+    return node
