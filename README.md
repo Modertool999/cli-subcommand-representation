@@ -8,19 +8,13 @@ A simple Python script that lists a command-line tool’s options and subcommand
 
 ## Quick Start
 
-1. Save `introspect.py` and make it executable:
-
-   ```bash
-   chmod +x introspect.py
-   ```
-2. Run it:
 
    ```bash
    # Top-level view of docker
-   ./introspect.py -t docker -d 1
+   python3 extract.py -t docker -d 1
 
    # Inspect git push
-   ./introspect.py -t git -s push -d 1
+   python3 extract.py -t git -s push -d 1
    ```
 
 ### Flags
