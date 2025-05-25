@@ -19,6 +19,6 @@ A simple Python script that lists a command-line tool’s options and subcommand
 
 ### Flags
 
-* `-t TOOL`, `--tool TOOL`   Command to inspect (e.g. docker, git)
-* `-s SUBCMD…`, `--subcmd SUBCMD…`   Subcommands under TOOL (e.g. push, "remote add")
+* `-t TOOL`, `--tool TOOL`   Command to inspect (e.g. docker, git, etc.)
+* `-s SUBCMD…`, `--subcmd SUBCMD…`   Subcommands under TOOL (e.g. push, build, etc.)
 * `-d N`, `--depth N`   Levels to explore (default: 2)
