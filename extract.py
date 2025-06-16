@@ -2,8 +2,7 @@ import subprocess
 import sys
 import argparse
 import re
-
-
+import pprint
 
 # Default recursion depth to prevent excessively deep recursion
 MAX_DEPTH = 2
@@ -136,8 +135,8 @@ def main():
 
     cmd_list = [args.tool] + args.subcmd
     tree = build_tree(cmd_list, depth=0, max_depth=args.depth)
-    # print Python dict representation rather than JSON
-    print(tree)
+    # pretty-print with indentation
+    pprint.pprint(tree)
 
 if __name__ == '__main__':
     main()
