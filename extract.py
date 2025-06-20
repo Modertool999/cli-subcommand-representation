@@ -2,7 +2,7 @@ import subprocess
 import sys
 import argparse
 import re
-import pprint
+import json
 
 # Default recursion depth to prevent excessively deep recursion
 MAX_DEPTH = 2
@@ -47,10 +47,8 @@ def parse_options(help_text: str):
     opts = []
     for line in help_text.splitlines():
         stripped = line.lstrip()
-        # filter out non-option lines and lone '-'
         if not stripped.startswith('-') or stripped == '-':
             continue
-        # split on two or more spaces to separate flags and description
         parts = re.split(r'\s{2,}', stripped, maxsplit=1)
         flags_part = parts[0].rstrip(',')
         desc = parts[1].strip() if len(parts) > 1 else ''
@@ -64,20 +62,16 @@ def parse_subcommands(help_text: str):
     Return a list of dicts {'name': str, 'help': str}
     """
     subs = []
-    lines = help_text.splitlines()
     in_section = False
-    for line in lines:
-        # detect Commands: or Available Commands:
+    for line in help_text.splitlines():
         if re.search(r'(?i)commands?:', line):
             in_section = True
             continue
         if not in_section:
             continue
-        # stop at next non-indented line
         if not line.startswith(' '):
             break
         stripped = line.lstrip()
-        # skip flags or numbered lists
         if stripped.startswith('-') or stripped[0].isdigit():
             continue
         parts = re.split(r'\s{2,}', stripped, maxsplit=1)
@@ -88,8 +82,7 @@ def parse_subcommands(help_text: str):
 
 def build_tree(cmd_list, depth=0, max_depth=MAX_DEPTH):
     """
-    Recursively build a dict representing the CLI structure,
-    formatted similarly to argparse.
+    Recursively build a dict representing the CLI structure.
     """
     help_text = get_help(cmd_list)
     description = help_text.splitlines()[0].strip() if help_text else ''
@@ -135,8 +128,8 @@ def main():
 
     cmd_list = [args.tool] + args.subcmd
     tree = build_tree(cmd_list, depth=0, max_depth=args.depth)
-    # pretty-print with indentation
-    pprint.pprint(tree)
+    # pretty-print as JSON
+    print(json.dumps(tree, indent=2))
 
 if __name__ == '__main__':
     main()
