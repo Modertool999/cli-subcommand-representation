@@ -9,38 +9,50 @@ A simple Python script that introspects any CLI’s usage, flags, and subcommand
 ## Quick Start
 
 ```bash
-# Top-level view of Docker
-python3 extract.py -t docker -d 1
+# Top-level view of Docker (shows two levels)
 
-# Inspect Git push
-python3 extract.py -t git -s push -d 1
+
+# Inspect Git push (and placeholder for deeper commands)
+python3 extract.py -t git -s push
 ```
 
 ### Arguments
 
 - `-t, --tool TOOL`       Base command to inspect (e.g., `docker`, `git`)
 - `-s, --subcmd SUBCMD…`  Optional subcommands under TOOL (e.g., `push`, `buildx`)
-- `-d, --depth N`         Levels of subcommands to recurse (default: 2)
+
+### Behavior
+
+1. **First-level** subcommands are fully expanded.
+2. **Second-level** subcommands show a `"..."` placeholder if deeper children exist, otherwise an empty list.
 
 ### Output
 
-Prints a JSON object with keys:
+Prints a JSON object with:
 
-- `name`: the command or subcommand name
-- `usage`: the `Usage:` line from help text
-- `options`: list of `{"flags": [...], "help": "..."}`
-- `subcommands`: nested command objects (same structure)
+- `name`: command or subcommand name
+- `description`: first line of help text
+- `options`: array of `{ "flags": [...], "help": "..." }`
+- `subcommands`: array of nested command objects (same structure), with `"..."` placeholders for further levels
 
 **Example Output**
 
 ```json
 {
   "name": "buildx",
-  "usage": "Usage: docker buildx [OPTIONS] COMMAND [ARGS]...",
+  "description": "Build and extend with BuildKit",
   "options": [
     { "flags": ["--builder string"], "help": "Override the builder instance" },
-    { "flags": ["-D", "--debug"], "help": "Enable debug logging" }
+    { "flags": ["-D", "--debug"],    "help": "Enable debug logging" }
   ],
-  "subcommands": [ ... ]
+  "subcommands": [
+    {
+      "name": "create",
+      "description": "Create a new builder instance",
+      "options": [ /* ... */ ],
+      "subcommands": ["..."]
+    },
+    /* ... */
+  ]
 }
 ```
