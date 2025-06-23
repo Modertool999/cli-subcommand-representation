@@ -110,7 +110,7 @@ def parse_git_subcommands(help_text: str):
     lines = help_text.splitlines()
     capture = False
     for line in lines:
-        if re.match(r'^[^\s].*:$', line) and not re.match(r'(?i)^usage:', line):
+        if line and not line.startswith(' ') and not re.match(r'(?i)^usage:', line):
             capture = True
             continue
         if capture and line.startswith('   '):
