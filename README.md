@@ -1,8 +1,17 @@
 # CLI Tool Representation
 
-A Python script that introspects any CLI’s usage, flags, and subcommands and outputs a JSON tree.
+A Python script that prints out CLI’s usage, flags, and subcommands
 
-## Quick Start
+## Usage
+```bash
+# Docker top-level overview
+python3 extract.py -t COMMAND_NAME -s SUBCOMMAND_NAME
+```
+
+Note: the -s SUBCOMMAND_NAME part is optional 
+
+
+## Examples
 ```bash
 # Docker top-level overview
 python3 extract.py -t docker
@@ -11,4 +20,4 @@ python3 extract.py -t docker
 python3 extract.py -t git -s push
 
 ```
-Note: subcommands of sucommands are displayed as '...' if they exist to avoid extenisve recursion
+Note: subcommands of subcommands are displayed as '...' if they exist to avoid extenisve recursion
