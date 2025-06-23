@@ -4,7 +4,6 @@ A Python script that prints out CLI’s usage, flags, and subcommands
 
 ## Usage
 ```bash
-# Docker top-level overview
 python3 extract.py -t COMMAND_NAME -s SUBCOMMAND_NAME
 ```
 
