@@ -1,4 +1,4 @@
-# CLI Tool Representation
+# CLI Subcommand Representation
 
 A Python script that prints out CLI’s usage, flags, and subcommands
 
