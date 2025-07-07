@@ -1,6 +1,6 @@
 # CLI Subcommand Representation
 
-A Python script that prints out CLI’s usage, flags, and subcommands
+A Python script that recursively prints out a command line program's usage, flags, and subcommands
 
 ## Usage
 ```bash
